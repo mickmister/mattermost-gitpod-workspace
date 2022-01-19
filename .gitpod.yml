@@ -8,7 +8,9 @@ ports:
 
 tasks:
   - name: Server
-    before: clear
+    before: |
+      clear
+      cd mattermott-server
     init: |
       go run ./build/docker-compose-generator/main.go postgres minio | docker-compose -f docker-compose.makefile.yml pull
       go get
@@ -19,7 +21,9 @@ tasks:
       ENABLED_DOCKER_SERVICES: postgres minio
 
   - name: Webapp
-    before: clear
+    before: |
+      clear
+      cd mattermost-webapp
     init: |
       nvm install v16.4.0
       nvm alias default v16.4.0
@@ -28,7 +32,7 @@ tasks:
     command: |
       make run
     openMode: split-right
-    
+
   - name: Dev
     env:
       MM_SERVICESETTINGS_SITEURL: http://localhost:8065
@@ -39,7 +43,7 @@ tasks:
     command: |
       gp await-port 8065
       echo "Server is running at $(echo $GITPOD_WORKSPACE_URL | cut -c 9-200)"
-            
+
 github:
   prebuilds:
     master: true
@@ -48,4 +52,3 @@ github:
 vscode:
   extensions:
     - golang.go
-
