@@ -10,7 +10,7 @@ tasks:
   - name: Server
     before: |
       clear
-      cd mattermott-server
+      cd mattermost-server
     init: |
       go run ./build/docker-compose-generator/main.go postgres minio | docker-compose -f docker-compose.makefile.yml pull
       go get
